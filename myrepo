@@ -17,7 +17,7 @@ pipeline {
                     docker pull nginx:latest
                     docker stop nginx-container || true
                     docker rm nginx-container || true
-                    docker run -d --name nginx-container -p 80:80 nginx:latest
+                    docker run -d --name nginx-container -p 89:80 nginx:latest
                     """
                 }
             }
