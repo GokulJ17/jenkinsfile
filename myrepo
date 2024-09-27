@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Assuming your configuration is stored in a Git repository
+                git branch: 'main', url: 'https://your-repository-url.git'
+            }
+        }
+
+        stage('Deploy Nginx Container') {
+            steps {
+                script {
+                    // Pull the Nginx image and run it as a container
+                    sh """
+                    docker pull nginx:latest
+                    docker stop nginx-container || true
+                    docker rm nginx-container || true
+                    docker run -d --name nginx-container -p 80:80 nginx:latest
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Nginx container deployed successfully!'
+        }
+        failure {
+            echo 'Nginx container deployment failed.'
+        }
+    }
+}
